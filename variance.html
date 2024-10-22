@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Addition Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        header {
+            text-align: left;
+            background-color: #e6e9f0;
+            padding: 20px;
+            padding-left: 50px !important;
+        }
+        
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .calculator {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        .examples {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            border-radius: 10px;
+            background-color:rgb(192, 194, 204);
+        }
+        
+        .example-row {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+            gap: 5px; 
+            align-items: center;
+        }
+        
+        .example-btn {
+            width: 240px !important; 
+            height: 100px; 
+            font-size: 1.5rem; 
+            text-align: center;
+            border: none;
+            background-color: #6c88e0;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .example-btn:hover {
+            background-color: #5873d4;
+        }
+        
+        .info {
+            background-color: #f7f7f7;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        footer {
+            padding: 20px;
+            background-color: #343536;
+            margin-top: 20px;
+            color: #fff;
+        }
+        
+        .calculator h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        #calculator-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        #calculator-form input {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2rem;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        #result-box {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2rem;
+            text-align: center;
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            background-color: #6c88e0;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #5873d4;
+        }
+        
+        p, h1 {
+            text-align: left;
+            margin-top: 20px;
+            margin-left: 33%;
+            width: 40%;
+        }
+        
+        .how-to, .in-life, .what-is, .other-operation {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        
+        .what-is, .other-operation {
+            background-color:rgb(192, 194, 204);
+        }
+        
+        .other-operation {
+            text-align: center !important;
+        }
+
+        @media only screen and (max-width: 540px) {
+            a {
+                text-align: center !important;
+                margin: 0 !important;
+            }
+
+            #calculator-form, .examples, .example-row, .other-operation {
+                flex-direction: column;
+            }
+            
+            button, input, span, .example-btn {
+                width: 100%;
+            }
+        }
+
+        @media only screen and (max-width: 1000px) {
+            h1, h2, p {
+                width: 100%;
+                margin-left: 0;
+            }
+
+            h1, h2 {
+                font-size: 1.2rem !important;
+            }
+        }
+    </style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const exampleButtons = document.querySelectorAll('.example-btn');
+
+        exampleButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const exampleText = this.textContent.trim();
+                const numbers = exampleText.split(', ').map(Number);
+
+                const result = calculateVariance(numbers);
+
+                document.getElementById('numbers').value = numbers.join(', ');
+                document.getElementById('numbers-display').textContent = numbers.join(', ');
+                document.getElementById('result-display').textContent = result;
+                document.getElementById('result-display-2').textContent = result;
+            });
+        });
+
+        document.getElementById('calculator-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const numbers = document.getElementById('numbers').value.split(',').map(num => parseFloat(num.trim()));
+            const result = calculateVariance(numbers);
+
+            document.getElementById('numbers-display').textContent = numbers.join(', ');
+            document.getElementById('result-display').textContent = result;
+            document.getElementById('result-display-2').textContent = result;
+        });
+
+        function calculateVariance(numbers) {
+            const mean = numbers.reduce((acc, val) => acc + val, 0) / numbers.length;
+            return numbers.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / (numbers.length - 1);
+        }
+    });
+</script>
+</head>
+<body>
+    <header>
+        <a style="font-size: 2rem; text-align: left; margin-left: 5%; text-decoration: none; color:#323131; font-weight: bold" href="index.html">Calculator</a>
+    </header>
+
+    <main>
+        <section class="calculator">
+            <h2 style="font-weight:normal; font-size: 2rem; margin-top: 20px">
+                Variance of 
+                <strong><span id="numbers-display">2, 4, 4, 4, 5, 5, 7, 9</span></strong> equals 
+                <strong><span id="result-display">4</span></strong>
+            </h2>
+            <form id="calculator-form">
+                <label for="numbers">Numbers:</label>
+                <input type="text" id="numbers" placeholder="2, 4, 4, 4, 5, 5, 7, 9" required>
+                <span>=</span>
+                <div id="result-box"><span id="result-display-2">4</span></div>
+                <button type="submit">Calculate</button>
+            </form>
+        </section>
+
+        <section class="examples">
+            <h3 style="font-size: 2rem; margin-top: 20px; text-align: center">Example</h3>
+            <div class="example-row">
+                <button class="example-btn">2, 4, 4, 5, 5, 7, 9</button>
+                <button class="example-btn">1, 2, 3, 4, 5</button>
+            </div>
+            <div class="example-row">
+                <button class="example-btn">3, 3, 3, 3, 3</button>
+                <button class="example-btn">10, 20, 30, 40, 50</button>
+            </div>
+            <div class="example-row">
+                <button class="example-btn">15, 20, 25, 30</button>
+                <button class="example-btn">100, 200, 300</button>
+            </div>
+        </section>
+
+        <section class="how-to">
+            <h1 style="font-size: 2rem; margin-top: 20px">How to calculate variance?</h1>
+            <p>Variance is a statistical measurement that describes the spread of numbers in a dataset. To calculate variance:</p>
+            <p>1. Find the mean (average) of the numbers.</p>
+            <p>2. Subtract the mean from each number to find the deviation from the mean.</p>
+            <p>3. Square each deviation.</p>
+            <p>4. Average the squared deviations to get the variance.</p>
+        </section>
+
+        <section class="what-is">
+            <h1 style="font-size: 2rem; margin-top: 20px">What is variance?</h1>
+            <p>Variance is a measure of how much values in a dataset differ from the mean. A low variance indicates that the data points tend to be close to the mean, while a high variance indicates that the data points are spread out over a larger range of values.</p>
+            <p>For example, a set of numbers with low variance might be <strong>4, 4, 4, 4</strong>, while a set with high variance might be <strong>1, 10, 100</strong>.</p>
+        </section>
+
+        <section class="in-life">
+            <h1 style="font-size: 2rem; margin-top: 20px">Variance in everyday life</h1>
+            <p>Understanding variance can help in various fields such as:</p>
+            <p>1. Finance: Assessing risk in investments.</p>
+            <p>2. Quality control: Measuring consistency in manufacturing processes.</p>
+            <p>3. Education: Analyzing test scores to gauge student performance variability.</p>
+        </section>
+
+        <section class="other-operation">
+            <h2 style="font-size: 2rem; margin-top: 20px">Other calculators</h2>
+            <div class="example-row">
+                <button class="example-btn" onclick="window.location.href='subtraction.html'">Subtraction</button>
+                <button class="example-btn" onclick="window.location.href='multiplication.html'">Multiplication</button>
+            </div>
+            <div class="example-row">
+                <button class="example-btn" onclick="window.location.href='division.html'">Division</button>
+                <button class="example-btn" onclick="window.location.href='exponentiation.html'">Exponentiation</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3 style="text-align:center">&copy; 2024 DividedBy</h3>
+    </footer>
+</body>
+</html>

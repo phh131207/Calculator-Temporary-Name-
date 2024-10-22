@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Addition Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        header {
+            text-align: left;
+            background-color: #e6e9f0;
+            padding: 20px;
+            padding-left: 50px !important;
+        }
+        
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .calculator {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        .examples {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            border-radius: 10px;
+            background-color:rgb(192, 194, 204);
+        }
+        
+        .example-row {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+            gap: 5px; 
+            align-items: center;
+        }
+        
+        .example-btn {
+            width: 240px !important; 
+            height: 100px; 
+            font-size: 1.5rem; 
+            text-align: center;
+            border: none;
+            background-color: #6c88e0;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .example-btn:hover {
+            background-color: #5873d4;
+        }
+        
+        .info {
+            background-color: #f7f7f7;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        footer {
+            padding: 20px;
+            background-color: #343536;
+            margin-top: 20px;
+            color: #fff;
+        }
+        
+        .calculator h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        #calculator-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        #calculator-form input {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2rem;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        #result-box {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2rem;
+            text-align: center;
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            background-color: #6c88e0;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #5873d4;
+        }
+        
+        p, h1 {
+            text-align: left;
+            margin-top: 20px;
+            margin-left: 33%;
+            width: 40%;
+        }
+        
+        .how-to, .in-life, .what-is, .other-operation {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        
+        .what-is, .other-operation {
+            background-color:rgb(192, 194, 204);
+        }
+        
+        .other-operation {
+            text-align: center !important;
+        }
+
+        @media only screen and (max-width: 540px) {
+            a {
+                text-align: center !important;
+                margin: 0 !important;
+            }
+
+            #calculator-form, .examples, .example-row, .other-operation {
+                flex-direction: column;
+            }
+            
+            button, input, span, .example-btn {
+                width: 100%;
+            }
+        }
+
+        @media only screen and (max-width: 1000px) {
+            h1, h2, p {
+                width: 100%;
+                margin-left: 0;
+            }
+
+            h1, h2 {
+                font-size: 1.2rem !important;
+            }
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const exampleButtons = document.querySelectorAll('.example-btn');
+
+            exampleButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const exampleText = this.textContent.trim();
+                    const numbers = exampleText.split(', ').map(Number);
+                    
+                    let result;
+
+                    if (numbers.every(num => !isNaN(num))) {
+                        numbers.sort((a, b) => a - b); // Sắp xếp mảng
+                        const mid = Math.floor(numbers.length / 2);
+                        if (numbers.length % 2 === 0) {
+                            result = (numbers[mid - 1] + numbers[mid]) / 2; // Tính trung vị cho mảng chẵn
+                        } else {
+                            result = numbers[mid]; // Tính trung vị cho mảng lẻ
+                        }
+                    } else {
+                        result = "Invalid input!";
+                    }
+
+                    document.getElementById('numbers').value = numbers.join(', ');
+                    document.getElementById('numbers-display').textContent = numbers.join(', ');
+                    document.getElementById('result-display').textContent = result;
+                    document.getElementById('result-display-2').textContent = result;
+                });
+            });
+
+            document.getElementById('calculator-form').addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const numbers = document.getElementById('numbers').value.split(',').map(num => parseFloat(num.trim()));
+                let result;
+
+                if (numbers.every(num => !isNaN(num))) {
+                    numbers.sort((a, b) => a - b);
+                    const mid = Math.floor(numbers.length / 2);
+                    if (numbers.length % 2 === 0) {
+                        result = (numbers[mid - 1] + numbers[mid]) / 2;
+                    } else {
+                        result = numbers[mid];
+                    }
+                } else {
+                    result = "Invalid input!";
+                }
+
+                document.getElementById('numbers-display').textContent = numbers.join(', ');
+                document.getElementById('result-display').textContent = result;
+                document.getElementById('result-display-2').textContent = result;
+            });
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <a style="font-size: 2rem; text-align: left; margin-left: 5%; text-decoration: none; color:#323131; font-weight: bold" href="index.html">Calculator</a>
+    </header>
+
+    <main>
+        <section class="calculator">
+            <h2 style="font-weight:normal; font-size: 2rem; margin-top: 20px">
+                Median of <strong><span id="numbers-display">1, 2, 3</span></strong> equals 
+                <strong><span id="result-display">2</span></strong>
+            </h2>
+            <form id="calculator-form">
+                <label for="numbers">Numbers:</label>
+                <input type="text" id="numbers" placeholder="1, 2, 3" required>
+                <span>=</span>
+                <div id="result-box"><span id="result-display-2">2</span></div>
+                <button type="submit">Calculate</button>
+            </form>
+        </section>            
+
+        <section class="examples">
+            <h3 style="font-size: 2rem; margin-top: 20px; text-align: center">Example</h3>
+            <div class="example-row">
+                <button class="example-btn">10, 20, 30</button>
+                <button class="example-btn">5, 15, 25</button>
+            </div>
+            <div class="example-row">
+                <button class="example-btn">100, 200, 300</button>
+                <button class="example-btn">1, 2, 3</button>
+            </div>
+            <div class="example-row">
+                <button class="example-btn">4, 8, 12</button>
+                <button class="example-btn">15, 25, 35</button>
+            </div>
+        </section>       
+
+        <section class="how-to">
+            <h1 style="font-size: 2rem; margin-top: 20px">How to calculate a median?</h1>
+            <p>Calculating a median is the process of finding the middle value of a set of numbers when they are arranged in order. To calculate a median:</p>
+            <p>1. Identify the numbers you want to find the median of.</p>
+            <p>2. Sort the numbers in ascending order.</p>
+            <p>3. If the count of numbers is odd, the median is the middle number.</p>
+            <p>4. If the count of numbers is even, the median is the average of the two middle numbers.</p>
+        </section>
+        
+        <section class="what-is">
+            <h1 style="font-size: 2rem; margin-top: 20px">What is a median?</h1>
+            <p>A median is a measure of central tendency that represents the middle value of a dataset when arranged in order. It provides a way to summarize the data without being influenced by outliers.</p>
+            <p>For example, for the numbers 2, 4, 6, the median is 4. For 1, 2, 3, 4, 5, the median is 3.</p>
+        </section>
+        
+        <section class="in-life">
+            <h1 style="font-size: 2rem; margin-top: 20px">Medians in everyday life</h1>
+            <p>Calculating medians is useful in various real-life situations. Here are a few examples:</p>
+            <p>Finding the median income of a population.</p>
+            <p>Determining the median score in a series of tests.</p>
+            <p>Analyzing the median age of a group of people.</p>
+            <p>Evaluating the median price of houses in a neighborhood.</p>
+        </section>                  
+
+        <section class="other-operation">
+            <h2 style="font-size: 2rem; margin-top: 20px">Other calculators</h2>
+            <div class="example-row">
+                <button class="example-btn" onclick="window.location.href='subtraction.html'">Subtraction</button>
+                <button class="example-btn" onclick="window.location.href='multiplication.html'">Multiplication</button>
+            </div>
+            <div class="example-row">
+                <button class="example-btn" onclick="window.location.href='division.html'">Division</button>
+                <button class="example-btn" onclick="window.location.href='exponentiation.html'">Exponentiation</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3 style="text-align:center">&copy; 2024 DividedBy</h3>
+    </footer>
+</body>
+</html>

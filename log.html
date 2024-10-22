@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Addition Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        header {
+            text-align: left;
+            background-color: #e6e9f0;
+            padding: 20px;
+            padding-left: 50px !important;
+        }
+        
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .calculator {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        .examples {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            border-radius: 10px;
+            background-color:rgb(192, 194, 204);
+        }
+        
+        .example-row {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+            gap: 5px; 
+            align-items: center;
+        }
+        
+        .example-btn {
+            width: 240px !important; 
+            height: 100px; 
+            font-size: 1.5rem; 
+            text-align: center;
+            border: none;
+            background-color: #6c88e0;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .example-btn:hover {
+            background-color: #5873d4;
+        }
+        
+        .info {
+            background-color: #f7f7f7;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        footer {
+            padding: 20px;
+            background-color: #343536;
+            margin-top: 20px;
+            color: #fff;
+        }
+        
+        .calculator h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        #calculator-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        #calculator-form input {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2rem;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        #result-box {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2rem;
+            text-align: center;
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            background-color: #6c88e0;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #5873d4;
+        }
+        
+        p, h1 {
+            text-align: left;
+            margin-top: 20px;
+            margin-left: 33%;
+            width: 40%;
+        }
+        
+        .how-to, .in-life, .what-is, .other-operation {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        
+        .what-is, .other-operation {
+            background-color:rgb(192, 194, 204);
+        }
+        
+        .other-operation {
+            text-align: center !important;
+        }
+
+        @media only screen and (max-width: 540px) {
+            a {
+                text-align: center !important;
+                margin: 0 !important;
+            }
+
+            #calculator-form, .examples, .example-row, .other-operation {
+                flex-direction: column;
+            }
+            
+            button, input, span, .example-btn {
+                width: 100%;
+            }
+        }
+
+        @media only screen and (max-width: 1000px) {
+            h1, h2, p {
+                width: 100%;
+                margin-left: 0;
+            }
+
+            h1, h2 {
+                font-size: 1.2rem !important;
+            }
+        }
+    </style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const exampleButtons = document.querySelectorAll('.example-btn');
+
+        exampleButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const exampleText = this.textContent.trim();
+                const parts = exampleText.split(' log base '); // Chia theo cú pháp logarit
+                const base = parseFloat(parts[0].trim());
+                const number = parseFloat(parts[1].trim());
+
+                let result;
+
+                if (!isNaN(base) && !isNaN(number) && base > 0 && base !== 1 && number > 0) {
+                    result = Math.log(number) / Math.log(base); // Tính logarit với cơ số n
+                } else {
+                    result = "Invalid input!";
+                }
+
+                document.getElementById('base').value = base;
+                document.getElementById('number').value = number;
+                document.getElementById('base-display').textContent = base;
+                document.getElementById('number-display').textContent = number;
+                document.getElementById('result-display').textContent = result;
+                document.getElementById('result-display-2').textContent = result;
+            });
+        });
+
+        document.getElementById('calculator-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const base = parseFloat(document.getElementById('base').value);
+            const number = parseFloat(document.getElementById('number').value);
+            let result;
+
+            if (!isNaN(base) && !isNaN(number) && base > 0 && base !== 1 && number > 0) {
+                result = Math.log(number) / Math.log(base);
+            } else {
+                result = "Invalid input!";
+            }
+
+            document.getElementById('base-display').textContent = base;
+            document.getElementById('number-display').textContent = number;
+            document.getElementById('result-display').textContent = result;
+            document.getElementById('result-display-2').textContent = result;
+        });
+    });                  
+</script>
+</head>
+<body>
+    <header>
+        <a style="font-size: 2rem; text-align: left; margin-left: 5%; text-decoration: none; color:#323131; font-weight: bold" href="index.html">Calculator</a>
+    </header>
+
+    <main>
+        <section class="calculator">
+            <h2 style="font-weight:normal; font-size: 2rem; margin-top: 20px">
+                <strong><span id="base-display">2</span></strong> log base 
+                <strong><span id="number-display">8</span></strong> equals 
+                <strong><span id="result-display">3</span></strong>
+            </h2>
+            <form id="calculator-form">
+                <label for="base">Base:</label>
+                <input type="number" id="base" placeholder="2" required min="1" step="any">
+                <span style="min-width: 6%">log base</span>
+                <input type="number" id="number" placeholder="8" required step="any" min="0">
+                <span>=</span>
+                <div id="result-box"><span id="result-display-2">3</span></div>
+                <button type="submit">Calculate</button>
+            </form>
+        </section>            
+
+        <section class="examples">
+            <h3 style="font-size: 2rem; margin-top: 20px; text-align: center">Example</h3>
+            <div class="example-row">
+                <button class="example-btn">2 log base 8</button>
+                <button class="example-btn">10 log base 100</button>
+            </div>
+            <div class="example-row">
+                <button class="example-btn">3 log base 27</button>
+                <button class="example-btn">5 log base 25</button>
+            </div>
+            <div class="example-row">
+                <button class="example-btn">4 log base 256</button>
+                <button class="example-btn">2 log base 16</button>
+            </div>
+        </section>       
+
+        <section class="how-to">
+            <h1 style="font-size: 2rem; margin-top: 20px">How to calculate a logarithm?</h1>
+            <p>Calculating a logarithm is the process of determining the exponent to which a base must be raised to obtain a certain number. To calculate a logarithm:</p>
+            <p>1. Identify the base of the logarithm and the number for which you want to find the logarithm.</p>
+            <p>2. Use the formula: log<sub>base</sub>(number) = log(number) / log(base).</p>
+            <p>3. Perform the calculation to find the exponent.</p>
+            <p>4. The result is the logarithm, which represents the exponent needed to express the number in terms of the base.</p>
+        </section>
+        
+        <section class="what-is">
+            <h1 style="font-size: 2rem; margin-top: 20px">What is a logarithm?</h1>
+            <p>A logarithm is the inverse operation of exponentiation. It represents the power to which a number (the base) must be raised to produce another number.</p>
+            <p>For example, log<sub>2</sub>(8) = 3, because 2<sup>3</sup> = 8.</p>
+        </section>
+        
+        <section class="in-life">
+            <h1 style="font-size: 2rem; margin-top: 20px">Logarithms in everyday life</h1>
+            <p>Calculating logarithms can be useful in various real-life applications. Here are a few examples:</p>
+            <p>Measuring the intensity of earthquakes using the Richter scale.</p>
+            <p>Understanding sound intensity in decibels.</p>
+            <p>Analyzing pH levels in chemistry.</p>
+            <p>Describing the growth of populations or investments over time.</p>
+        </section>                
+
+        <section class="other-operation">
+            <h2 style="font-size: 2rem; margin-top: 20px">Other calculators</h2>
+            <div class="example-row">
+                <button class="example-btn" onclick="window.location.href='subtraction.html'">Subtraction</button>
+                <button class="example-btn" onclick="window.location.href='multiplication.html'">Multiplication</button>
+            </div>
+            <div class="example-row">
+                <button class="example-btn" onclick="window.location.href='division.html'">Division</button>
+                <button class="example-btn" onclick="window.location.href='exponentiation.html'">Exponentiation</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3 style="text-align:center">&copy; 2024 DividedBy</h3>
+    </footer>
+</body>
+</html>

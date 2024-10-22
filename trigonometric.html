@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Addition Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        header {
+            text-align: left;
+            background-color: #e6e9f0;
+            padding: 20px;
+            padding-left: 50px !important;
+        }
+        
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .calculator {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        .examples {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            border-radius: 10px;
+            background-color:rgb(192, 194, 204);
+        }
+        
+        .example-row {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+            gap: 5px; 
+            align-items: center;
+        }
+        
+        .example-btn {
+            width: 240px !important; 
+            height: 100px; 
+            font-size: 1.5rem; 
+            text-align: center;
+            border: none;
+            background-color: #6c88e0;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .example-btn:hover {
+            background-color: #5873d4;
+        }
+        
+        .info {
+            background-color: #f7f7f7;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        footer {
+            padding: 20px;
+            background-color: #343536;
+            margin-top: 20px;
+            color: #fff;
+        }
+        
+        .calculator h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        #calculator-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        #calculator-form input {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2rem;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px 0;
+            font-size: 1.2rem;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        #result-box {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2rem;
+            text-align: center;
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            background-color: #6c88e0;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #5873d4;
+        }
+        
+        p, h1 {
+            text-align: left;
+            margin-top: 20px;
+            margin-left: 33%;
+            width: 40%;
+        }
+        
+        .how-to, .in-life, .what-is, .other-operation {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        
+        .what-is, .other-operation {
+            background-color:rgb(192, 194, 204);
+        }
+        
+        .other-operation {
+            text-align: center !important;
+        }
+
+        #deg-and-rad {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+    
+        #deg-radio, #rad-radio {
+            margin-right: 5px;
+        }
+
+        @media only screen and (max-width: 540px) {
+            a {
+                text-align: center !important;
+                margin: 0 !important;
+            }
+
+            #calculator-form, .examples, .example-row, .other-operation {
+                flex-direction: column;
+            }
+            
+            button, input, span, .example-btn, select {
+                width: 100%;
+            }
+        }
+
+        @media only screen and (max-width: 1000px) {
+            h1, h2, p {
+                width: 100%;
+                margin-left: 0;
+            }
+
+            h1, h2 {
+                font-size: 1.2rem !important;
+            }
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const exampleButtons = document.querySelectorAll('.example-btn');
+            const calcTypeSelect = document.getElementById('calc-type');
+            const resultDisplay = document.getElementById('result-display');
+            const resultDisplay2 = document.getElementById('result-display-2');
+            const angleInput = document.getElementById('angle');
+    
+            exampleButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const exampleText = this.textContent.trim();
+                    const type = exampleText.split(' ')[0];
+                    const angle = parseFloat(exampleText.match(/\(([^)]+)\)/)[1]);
+    
+                    calcTypeSelect.value = type;
+                    angleInput.value = angle; // Cập nhật giá trị góc
+                    calculate(angle);
+                });
+            });
+    
+            document.getElementById('calculator-form').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const angle = parseFloat(angleInput.value);
+                calculate(angle);
+            });
+    
+            function calculate(angle) {
+                const type = calcTypeSelect.value;
+                let result;
+            
+                // Kiểm tra kiểu góc
+                const isDegreeMode = document.getElementById('deg-radio').checked;
+            
+                // Chuyển đổi góc từ độ sang radian nếu cần
+                const angleInRadians = isDegreeMode ? angle * (Math.PI / 180) : angle;
+            
+                switch (type) {
+                    case 'sin':
+                        result = Math.sin(angleInRadians);
+                        break;
+                    case 'cos':
+                        result = Math.cos(angleInRadians);
+                        break;
+                    case 'tan':
+                        result = Math.tan(angleInRadians);
+                        break;
+                    case 'cot':
+                        result = 1 / Math.tan(angleInRadians);
+                        break;
+                    case 'sin-1':
+                        if (!isDegreeMode) {
+                            // Chỉ tính nghịch đảo ở chế độ radian
+                            if (angle < -1 || angle > 1) {
+                                result = "Invalid input!";
+                            } else {
+                                result = Math.asin(angle); // Kết quả sẽ là radian
+                            }
+                        } else {
+                            // Chuyển đổi kết quả từ radian sang độ
+                            if (angle < -1 || angle > 1) {
+                                result = "Invalid input!";
+                            } else {
+                                result = Math.asin(angle) * (180 / Math.PI); // Kết quả sẽ là độ
+                            }
+                        }
+                        break;
+                    case 'cos-1':
+                        if (isDegreeMode) {
+                            if (angle < -1 || angle > 1) {
+                                result = "Invalid input!";
+                            } else {
+                                result = Math.acos(angle); // Kết quả sẽ là radian
+                            }
+                        } else {
+                            if (angle < -1 || angle > 1) {
+                                result = "Invalid input!";
+                            } else {
+                                result = Math.acos(angle) * (180 / Math.PI); // Kết quả sẽ là độ
+                            }
+                        }
+                        break;
+                    case 'tan-1':
+                        result = isDegreeMode ? Math.atan(angle) * (180 / Math.PI) : Math.atan(angle);
+                        break;
+                    case 'cot-1':
+                        if (angle === 0) {
+                            result = "Invalid input!";
+                        } else {
+                            result = isDegreeMode ? Math.atan(1 / angle) * (180 / Math.PI) : Math.atan(1 / angle);
+                        }
+                        break;
+                    default:
+                        result = "Invalid input!";
+                }           
+    
+                document.getElementById('calc-type-display').textContent = type;
+                document.getElementById('angle-display').textContent = angle;
+                document.getElementById('result-display').textContent = result
+                document.getElementById('result-display-2').textContent = result
+                angleInput.value = angle;
+            }
+        });
+    </script>
+    </head>
+    <body>
+        <header>
+            <a style="font-size: 2rem; text-align: left; margin-left: 5%; text-decoration: none; color:#323131; font-weight: bold" href="index.html">Calculator</a>
+        </header>
+    
+        <main>
+            <section class="calculator">
+                <h2 style="font-weight:normal; font-size: 2rem; margin-top: 20px">
+                    <strong><span id="calc-type-display">sin</span></strong> of 
+                    <strong><span id="angle-display">30</span></strong> equals 
+                    <strong><span id="result-display">0.5</span></strong>
+                </h2>
+    
+                <div id="deg-and-rad">
+                    <input type="radio" id="deg-radio" name="angle-type" value="deg" checked>
+                    <label for="deg-radio" id="deg-radio">Deg</label>
+                    <input type="radio" id="rad-radio" name="angle-type" value="rad">
+                    <label for="rad-radio" id="deg-radio">Rad</label>
+                </div>
+    
+                <form id="calculator-form">
+                    <label for="calc-type">Calculate:</label>
+                    <select id="calc-type">
+                        <option value="sin">sin</option>
+                        <option value="cos">cos</option>
+                        <option value="tan">tan</option>
+                        <option value="cot">cot</option>
+                        <option value="sin-1">sin<sup>-1</sup></option>
+                        <option value="cos-1">cos<sup>-1</sup></option>
+                        <option value="tan-1">tan<sup>-1</sup></option>
+                        <option value="cot-1">cot<sup>-1</sup></option>
+                    </select>
+                    <label for="angle">Angle:</label>
+                    <input type="number" id="angle" placeholder="30" required step="any">
+                    <span>=</span>
+                    <div id="result-box"><span id="result-display-2">0.5</span></div>
+                    <button type="submit">Calculate</button>
+                </form>
+            </section>
+    
+            <section class="examples">
+                <h3 style="font-size: 2rem; margin-top: 20px; text-align: center">Examples</h3>
+                <div class="example-row">
+                    <button class="example-btn">sin (30)</button>
+                    <button class="example-btn">cos (60)</button>
+                </div>
+                <div class="example-row">
+                    <button class="example-btn">tan (45)</button>
+                    <button class="example-btn">cot (30)</button>
+                </div>
+                <div class="example-row">
+                    <button class="example-btn">sin<sup>-1</sup> (0.5)</button>
+                    <button class="example-btn">cos<sup>-1</sup> (0.5)</button>
+                </div>
+                <div class="example-row">
+                    <button class="example-btn">tan<sup>-1</sup> (0.5)</button>
+                    <button class="example-btn">cot<sup>-1</sup> (1)</button>
+                </div>
+            </section>
+    
+            <section class="how-to">
+                <h1 style="font-size: 2rem; margin-top: 20px">How to calculate trigonometric functions?</h1>
+                <p>Calculating trigonometric functions involves finding the sine, cosine, tangent, and their inverses based on a given angle. To calculate:</p>
+                <p>1. Identify the function you want to calculate (e.g., sin, cos, tan).</p>
+                <p>2. Input the angle value in degrees or radians.</p>
+                <p>3. Use the corresponding mathematical function to obtain the result.</p>
+                <p>4. The result will provide the value of the trigonometric function for the specified angle.</p>
+            </section>
+    
+            <section class="what-is">
+                <h1 style="font-size: 2rem; margin-top: 20px">What are trigonometric functions?</h1>
+                <p>Trigonometric functions relate the angles of a triangle to the lengths of its sides. The primary functions are sine, cosine, and tangent.</p>
+                <p>For example, in a right triangle, the sine of an angle is the ratio of the length of the opposite side to the hypotenuse.</p>
+            </section>
+    
+            <section class="in-life">
+                <h1 style="font-size: 2rem; margin-top: 20px">Trigonometric functions in everyday life</h1>
+                <p>Trigonometric functions are used in various applications:</p>
+                <p>Navigation and mapping.</p>
+                <p>Engineering and architecture for structural design.</p>
+                <p>Physics for wave motion and oscillations.</p>
+                <p>Computer graphics for modeling and simulations.</p>
+            </section>
+    
+            <section class="other-operation">
+                <h2 style="font-size: 2rem; margin-top: 20px">Other calculators</h2>
+                <div class="example-row">
+                    <button class="example-btn" onclick="window.location.href='subtraction.html'">Subtraction</button>
+                    <button class="example-btn" onclick="window.location.href='multiplication.html'">Multiplication</button>
+                </div>
+                <div class="example-row">
+                    <button class="example-btn" onclick="window.location.href='division.html'">Division</button>
+                    <button class="example-btn" onclick="window.location.href='exponentiation.html'">Exponentiation</button>
+                </div>
+            </section>
+        </main>
+    
+        <footer>
+            <h3 style="text-align:center">&copy; 2024 DividedBy</h3>
+        </footer>
+    </body>        
+</html>

@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Mortgage Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        header {
+            text-align: left;
+            background-color: #e6e9f0;
+            padding: 20px;
+            padding-left: 50px !important;
+        }
+        
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .calculator-wrapper {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .calculator {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            flex: 1;
+        }
+        
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            background-color: #6c88e0;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #5873d4;
+        }
+
+        #calculator-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        #calculator-form label {
+            width: 30%;
+            text-align: left;
+        }
+
+        #calculator-form input, #calculator-form select {
+            width: 65%;
+            padding: 10px;
+            font-size: 1rem;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #result-box {
+            width: 100%;
+            padding: 10px;
+            text-align: center;
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .amortization-schedule {
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        footer {
+            padding: 20px;
+            background-color: #343536;
+            margin-top: 20px;
+            color: #fff;
+        }
+
+        select {
+            max-width: 100px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            width: 100%;
+        }
+        
+        .statistic-table {
+            width: 100%;
+            background-color: white;
+            border-radius: 5px;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-top: 10px;
+        }
+
+        .statistic-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .statistic-table th, .statistic-table td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .chart-container {
+            margin-top: 20px;
+            position: relative;
+            width: 100%;
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a style="font-size: 2rem; text-align: left; margin-left: 5%; text-decoration: none; color:#323131; font-weight: bold" href="index.html">Calculator</a>
+    </header>
+
+    <main>
+    
+    <div class="calculator-wrapper">
+        <section class="calculator">
+            <h2 style="font-weight:normal; font-size: 2rem; margin-top: 20px">Mortgage Calculator</h2>
+            <form id="calculator-form">
+                <label for="home-price">Home Price ($):</label>
+                <input type="number" id="home-price" placeholder="Home Price" required step="any">
+
+                <label for="down-payment">Down Payment ($):</label>
+                <input type="number" id="down-payment" placeholder="Down Payment" required step="any">
+
+                <label for="loan-term">Loan Term (Years):</label>
+                <input type="number" id="loan-term" placeholder="Loan Term" required step="any">
+
+                <label for="interest-rate">Interest Rate (%):</label>
+                <input type="number" id="interest-rate" placeholder="Annual Interest Rate" required step="any">
+
+                <label for="start-date">Start Date:</label>
+                <div style="display: flex; justify-content: space-between; width: 65%;">
+                    <select id="start-day" required>
+                        <option value="">Day</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                        <option value="19">19</option>
+                        <option value="20">20</option>
+                        <option value="21">21</option>
+                        <option value="22">22</option>
+                        <option value="23">23</option>
+                        <option value="24">24</option>
+                        <option value="25">25</option>
+                        <option value="26">26</option>
+                        <option value="27">27</option>
+                        <option value="28">28</option>
+                        <option value="29">29</option>
+                        <option value="30">30</option>
+                        <option value="31">31</option>
+                    </select>
+                    <select id="start-month" required>
+                        <option value="">Month</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                    </select>
+                    <select id="start-year" required>
+                        <option value="">Year</option>
+                        <option value="1991">1991</option>
+                        <option value="1992">1992</option>
+                        <option value="1993">1993</option>
+                        <option value="1994">1994</option>
+                        <option value="1995">1995</option>
+                        <option value="1996">1996</option>
+                        <option value="1997">1997</option>
+                        <option value="1998">1998</option>
+                        <option value="1999">1999</option>
+                        <option value="2000">2000</option>
+                        <option value="2001">2001</option>
+                        <option value="2002">2002</option>
+                        <option value="2003">2003</option>
+                        <option value="2004">2004</option>
+                        <option value="2005">2005</option>
+                        <option value="2006">2006</option>
+                        <option value="2007">2007</option>
+                        <option value="2008">2008</option>
+                        <option value="2009">2009</option>
+                        <option value="2010">2010</option>
+                        <option value="2011">2011</option>
+                        <option value="2012">2012</option>
+                        <option value="2013">2013</option>
+                        <option value="2014">2014</option>
+                        <option value="2015">2015</option>
+                        <option value="2016">2016</option>
+                        <option value="2017">2017</option>
+                        <option value="2018">2018</option>
+                        <option value="2019">2019</option>
+                        <option value="2020">2020</option>
+                        <option value="2021">2021</option>
+                        <option value="2022">2022</option>
+                        <option value="2023">2023</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                        <option value="2026">2026</option>
+                        <option value="2027">2027</option>
+                        <option value="2028">2028</option>
+                        <option value="2029">2029</option>
+                        <option value="2030">2030</option>
+                        <option value="2031">2031</option>
+                        <option value="2032">2032</option>
+                        <option value="2033">2033</option>
+                        <option value="2034">2034</option>
+                        <option value="2035">2035</option>
+                        <option value="2036">2036</option>
+                        <option value="2037">2037</option>
+                        <option value="2038">2038</option>
+                        <option value="2039">2039</option>
+                        <option value="2040">2040</option>
+                        <option value="2041">2041</option>
+                        <option value="2042">2042</option>
+                        <option value="2043">2043</option>
+                        <option value="2044">2044</option>
+                        <option value="2045">2045</option>
+                        <option value="2046">2046</option>
+                        <option value="2047">2047</option>
+                        <option value="2048">2048</option>
+                        <option value="2049">2049</option>
+                        <option value="2050">2050</option>                            
+                    </select>
+                </div>                
+
+                <label for="property-tax">Property Taxes (%):</label>
+                <input type="number" id="property-tax" placeholder="Property Taxes" required step="any">
+
+                <label for="home-insurance">Home Insurance ($):</label>
+                <input type="number" id="home-insurance" placeholder="Home Insurance" required step="any">
+
+                <label for="pmi-insurance">PMI Insurance ($):</label>
+                <input type="number" id="pmi-insurance" placeholder="PMI Insurance" required step="any">
+
+                <label for="hoa-fee">HOA Fee ($):</label>
+                <input type="number" id="hoa-fee" placeholder="HOA Fee" required step="any">
+
+                <label for="other-costs">Other Costs ($):</label>
+                <input type="number" id="other-costs" placeholder="Other Costs" required step="any">
+
+                <label for="property-tax-increase">Property Taxes Increase (%):</label>
+                <input type="number" id="property-tax-increase" placeholder="Increase" required step="any">
+
+                <label for="home-insurance-increase">Home Insurance Increase (%):</label>
+                <input type="number" id="home-insurance-increase" placeholder="Increase" required step="any">
+
+                <label for="hoa-fee-increase">HOA Fee Increase (%):</label>
+                <input type="number" id="hoa-fee-increase" placeholder="Increase" required step="any">
+
+                <label for="other-costs-increase">Other Costs Increase (%):</label>
+                <input type="number" id="other-costs-increase" placeholder="Increase" required step="any">
+
+                <div class="button-container">
+                    <button type="submit">Calculate</button>
+                </div>                
+            </form>
+        </section>
+
+        <div id="result-box" style="padding: 20px; border-radius: 5px;">
+            <h1>Monthly Pay: <span id="monthly-payment">$0.00</span></h1>
+    
+            <table style="width: 100%; margin: 20px 0;">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>First Month</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background-color: rgb(174, 174, 174);">
+                        <td><strong>Mortgage Payment</strong></td>
+                        <td id="first-month-payment">$1.00</td>
+                        <td id="total-mortgage">$0.00</td>
+                    </tr>
+                    <tr>
+                        <td>Property Tax</td>
+                        <td id="first-month-tax">$1.00</td>
+                        <td id="total-tax">$0.00</td>
+                    </tr>
+                    <tr>
+                        <td>Home Insurance</td>
+                        <td id="first-month-insurance">$2.00</td>
+                        <td id="total-insurance">$0.00</td>
+                    </tr>
+                    <tr>
+                        <td>PMI</td>
+                        <td id="first-month-pmi">$10.00</td>
+                        <td id="total-pmi">$0.00</td>
+                    </tr>
+                    <tr>
+                        <td>HOA Fee</td>
+                        <td id="first-month-hoa">$3.00</td>
+                        <td id="total-hoa">$0.00</td>
+                    </tr>
+                    <tr>
+                        <td>Other Costs</td>
+                        <td id="first-month-other">$4.00</td>
+                        <td id="total-other">$0.00</td>
+                    </tr>
+                    <tr style="background-color: rgb(174, 174, 174);">
+                        <td><strong>Total Out-of-Pocket</strong></td>
+                        <td id="first-month-total">$21.00</td>
+                        <td id="total-out-of-pocket">$0.00</td>
+                    </tr>
+                </tbody>
+            </table>
+    
+            <div style="display: none;"><canvas id="cost-chart"></canvas></div>
+
+            <div id="chart-legend" style="display: none;"></div>
+    
+            <table style="width: 100%; margin-top: 20px;">
+                <thead>
+                    <tr style="background-color: rgb(174, 174, 174);"><th>House Price</th><th>Value</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>House Price</td>
+                        <td id="house-price">$0.00</td>
+                    </tr>
+                    <tr>
+                        <td>Loan Amount</td>
+                        <td id="loan-amount">$0.00</td>
+                    </tr>
+                    <tr>
+                        <td>Down Payment</td>
+                        <td id="down-payment2">$0.00</td>
+                    </tr>
+                    <tr>
+                        <td>Total Mortgage Payments</td>
+                        <td id="total-mortgage-payments">$0.00</td>
+                    </tr>
+                    <tr>
+                        <td>Total Interest</td>
+                        <td id="total-interest">$0.00</td>
+                    </tr>
+                    <tr>
+                        <td>Mortgage Payoff Date</td>
+                        <td id="mortgage-payoff-date"></td>
+                    </tr>
+                    <tr>
+                        <td>PMI Payoff Date</td>
+                        <td id="pmi-payoff-date"></td>
+                    </tr>
+                </tbody>
+            </table>
+    
+            <table style="width: 100%; margin-top: 20px;">
+                <thead></thead>
+                <tr style="background-color: rgb(174, 174, 174);"><th>If Payback Biweekly</th><th>Value</th></tr>
+                <tbody>
+                    <tr><td>Biweekly Payment</td><td id="biweekly-payment">$0.00</td></tr>
+                    <tr><td>Total Interest</td><td id="total-interest-biweekly">$0.00</td></tr>
+                    <tr><td>Payoff Length</td><td id="payoff-length">0 years</td></tr>                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <section class="amortization-schedule">
+        <h2>Amortization Schedule</h2>
+        <table id="amortization-table">
+            <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>Date</th>
+                    <th>Principal Paid</th>
+                    <th>Interest Paid</th>
+                    <th>Remaining Balance</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Amortization schedule rows will be added here -->
+            </tbody>
+        </table>
+    </section>
+    
+    <footer>
+        <h3 style="text-align:center">&copy; 2024 YourCompanyName</h3>
+    </footer>
+
+    <script>  
+        function parseDollarValue(value) {
+            return parseFloat(value.replace(/[^0-9.-]+/g,""));
+        }
+        
+        const monthlyPayment = parseDollarValue(document.getElementById('first-month-payment').textContent);
+        const monthlyTax = parseDollarValue(document.getElementById('first-month-tax').textContent);
+        const homeInsurance = parseDollarValue(document.getElementById('first-month-insurance').textContent);
+        const pmiInsurance = parseDollarValue(document.getElementById('first-month-pmi').textContent);
+        const hoaFee = parseDollarValue(document.getElementById('first-month-hoa').textContent);
+        const otherCosts = parseDollarValue(document.getElementById('first-month-other').textContent);
+        
+        const totalMonthlyCost = monthlyPayment + monthlyTax + homeInsurance + pmiInsurance + hoaFee + otherCosts; // Tính tổng
+    
+        const percentages = totalMonthlyCost > 0 ? [
+            (monthlyPayment / totalMonthlyCost) * 100,
+            (monthlyTax / totalMonthlyCost) * 100,
+            (homeInsurance / totalMonthlyCost) * 100,
+            (pmiInsurance / totalMonthlyCost) * 100,
+            (hoaFee / totalMonthlyCost) * 100,
+            (otherCosts / totalMonthlyCost) * 100
+        ] : [0, 0, 0, 0, 0, 0]; // Nếu tổng = 0 thì tất cả phần trăm = 0
+    
+        const data = {
+            labels: [
+                'Mortgage Payment',
+                'Property Tax',
+                'Home Insurance',
+                'PMI',
+                'HOA Fee',
+                'Other Costs'
+            ],
+            datasets: [{
+                data: percentages,
+                backgroundColor: [
+                    '#ff6384',
+                    '#36a2eb',
+                    '#ffce56',
+                    '#cc65fe',
+                    '#ff9f40',
+                    '#4bc0c0'
+                ]
+            }]
+        };
+    
+        const ctx = document.getElementById('cost-chart').getContext('2d');
+        const myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: data
+        });
+    </script>          
+    
+    <script>
+        function formatCurrency(value) {
+            return `$${value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calculator-form').addEventListener('submit', function(event) {
+                event.preventDefault();
+        
+                const homePrice = parseFloat(document.getElementById('home-price').value);
+                const downPayment = parseFloat(document.getElementById('down-payment').value);
+                const loanTerm = parseFloat(document.getElementById('loan-term').value);
+                const interestRate = parseFloat(document.getElementById('interest-rate').value) / 100 / 12;
+                const propertyTaxRate = parseFloat(document.getElementById('property-tax').value) / 100 / 12;
+                const homeInsurance = parseFloat(document.getElementById('home-insurance').value) / 12;
+                const pmiInsurance = parseFloat(document.getElementById('pmi-insurance').value) / 12;
+                const hoaFee = parseFloat(document.getElementById('hoa-fee').value) / 12;
+                const otherCosts = parseFloat(document.getElementById('other-costs').value) / 12;
+        
+                const propertyTaxIncrease = parseFloat(document.getElementById('property-tax-increase').value) / 100 / 12;
+                const homeInsuranceIncrease = parseFloat(document.getElementById('home-insurance-increase').value) / 100 / 12;
+                const hoaFeeIncrease = parseFloat(document.getElementById('hoa-fee-increase').value) / 100 / 12;
+                const otherCostsIncrease = parseFloat(document.getElementById('other-costs-increase').value) / 100 / 12;                
+        
+                const startDay = parseInt(document.getElementById('start-day').value);
+                const startMonth = parseInt(document.getElementById('start-month').value) - 1; // Month is 0-indexed
+                const startYear = parseInt(document.getElementById('start-year').value);
+        
+                const startDate = new Date(startYear, startMonth, startDay);
+        
+                const loanAmount = homePrice - downPayment;
+                const monthlyPayment = (loanAmount * interestRate) / (1 - Math.pow(1 + interestRate, -loanTerm * 12));
+                const monthlyTax = (homePrice * propertyTaxRate);
+                const totalMonthlyPayment = monthlyPayment + monthlyTax + homeInsurance + pmiInsurance + hoaFee + otherCosts;
+        
+                // Calculate first month values
+                document.getElementById('monthly-payment').textContent = formatCurrency(monthlyPayment);
+                document.getElementById('first-month-payment').textContent = formatCurrency(monthlyPayment);
+                document.getElementById('first-month-tax').textContent = formatCurrency(monthlyTax);
+                document.getElementById('first-month-insurance').textContent = formatCurrency(homeInsurance);
+                document.getElementById('first-month-pmi').textContent = formatCurrency(pmiInsurance);
+                document.getElementById('first-month-hoa').textContent = formatCurrency(hoaFee);
+                document.getElementById('first-month-other').textContent = formatCurrency(otherCosts);
+                document.getElementById('first-month-total').textContent = formatCurrency(totalMonthlyPayment);
+        
+                // Total values
+                const totalMortgage = monthlyPayment * loanTerm * 12;
+                const totalTax = monthlyTax * loanTerm * 12;
+                const totalInsurance = homeInsurance * loanTerm * 12;
+                const totalPMI = pmiInsurance * loanTerm * 12;
+                const totalHOA = hoaFee * loanTerm * 12;
+                const totalOther = otherCosts * loanTerm * 12;
+        
+                document.getElementById('total-mortgage').textContent = formatCurrency(totalMortgage);
+                document.getElementById('total-tax').textContent = formatCurrency(totalTax);
+                document.getElementById('total-insurance').textContent = formatCurrency(totalInsurance);
+                document.getElementById('total-pmi').textContent = formatCurrency(totalPMI);
+                document.getElementById('total-hoa').textContent = formatCurrency(totalHOA);
+                document.getElementById('total-other').textContent = formatCurrency(totalOther);
+                document.getElementById('total-out-of-pocket').textContent = formatCurrency(totalMortgage + totalTax + totalInsurance + totalPMI + totalHOA + totalOther);
+        
+                // Calculate and display amortization schedule
+                const amortizationTable = document.getElementById('amortization-table').getElementsByTagName('tbody')[0];
+                amortizationTable.innerHTML = ''; // Clear existing rows
+        
+                let balance = loanAmount;
+
+                let totalInterestPaid = 0; 
+        
+                for (let i = 0; i < loanTerm * 12; i++) {
+                    const interestPayment = balance * interestRate;
+                    const principalPayment = monthlyPayment - interestPayment;
+                    balance -= principalPayment;
+
+                    totalInterestPaid += interestPayment;
+                    
+                    // Create payment date
+                    const paymentDate = new Date(startDate);
+                    paymentDate.setMonth(paymentDate.getMonth() + i);
+                    
+                    // Append new row to amortization table
+                    const newRow = amortizationTable.insertRow();
+                    newRow.insertCell(0).textContent = i + 1; // Month number
+                    newRow.insertCell(1).textContent = paymentDate.toLocaleDateString(); // Date
+                    newRow.insertCell(2).textContent = formatCurrency(principalPayment); // Principal Paid
+                    newRow.insertCell(3).textContent = formatCurrency(interestPayment); // Interest Paid
+                    newRow.insertCell(4).textContent = balance < 0 ? formatCurrency(0) : formatCurrency(balance); // Remaining Balance
+                }                
+        
+                // Set amortization payoff dates
+                const mortgagePayoffDate = new Date(startDate);
+                mortgagePayoffDate.setFullYear(mortgagePayoffDate.getFullYear() + loanTerm);
+
+                function calculatePMIPayoffDate(homePrice, downPayment, startDate, monthlyPayment, interestRate) {
+                    const requiredEquity = homePrice * 0.20; // 20% equity
+                    let loanAmount = homePrice - downPayment; // Use let instead of const
+                    let currentEquity = homePrice - loanAmount;
+                    
+                    let months = 0;
+                
+                    // Loop until current equity reaches required equity
+                    while (currentEquity < requiredEquity) {
+                        // Calculate interest and principal for the current month
+                        const interestPayment = loanAmount * interestRate;
+                        const principalPayment = monthlyPayment - interestPayment;
+                
+                        // Update the loan amount and current equity
+                        loanAmount -= principalPayment;
+                        currentEquity = homePrice - loanAmount;
+                
+                        // Increment month
+                        months++;
+                        if (months > loanTerm * 12) break; // Prevent infinite loop in case it never reaches
+                    }
+                
+                    const payoffDate = new Date(startDate);
+                    const payoffDate2 = payoffDate.setMonth(payoffDate.getMonth() + months-1);
+                
+                    return currentEquity > requiredEquity ? payoffDate.toLocaleDateString() : ""; 
+                }
+                
+                // Ensure to call this function with the correct parameters
+                const pmiPayoffDate = calculatePMIPayoffDate(homePrice, downPayment, startDate, monthlyPayment, interestRate);                                
+                        
+                // Displaying additional values
+                document.getElementById('house-price').textContent = formatCurrency(homePrice);
+                document.getElementById('loan-amount').textContent = formatCurrency(loanAmount);
+                document.getElementById('down-payment2').textContent = formatCurrency(downPayment);
+                document.getElementById('total-mortgage-payments').textContent = formatCurrency(totalMortgage);
+                document.getElementById('total-interest').textContent = formatCurrency(totalInterestPaid); // Note: Make sure to define totalInterestPaid
+                document.getElementById('mortgage-payoff-date').textContent = mortgagePayoffDate.toLocaleDateString();
+                document.getElementById('pmi-payoff-date').textContent = pmiPayoffDate;
+
+                const biweeklyPayment = monthlyPayment / 2;
+
+                const totalbiweeklyPayment = loanTerm * 26;
+                const totalpayment = biweeklyPayment * totalbiweeklyPayment;
+                const totalInterestBiweekly = totalpayment - loanAmount;
+
+                document.getElementById('biweekly-payment').textContent = formatCurrency(biweeklyPayment);
+                document.getElementById('total-interest-biweekly').textContent = formatCurrency(totalInterestBiweekly);
+                document.getElementById('payoff-length').textContent = `${payoffLength} years`;
+    });
+        });        
+    </script>
+</body>
+</html>

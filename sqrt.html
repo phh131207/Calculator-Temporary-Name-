@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Addition Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        header {
+            text-align: left;
+            background-color: #e6e9f0;
+            padding: 20px;
+            padding-left: 50px !important;
+        }
+        
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .calculator {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        .examples {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            border-radius: 10px;
+            background-color:rgb(192, 194, 204);
+        }
+        
+        .example-row {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+            gap: 5px; 
+            align-items: center;
+        }
+        
+        .example-btn {
+            width: 240px !important; 
+            height: 100px; 
+            font-size: 1.5rem; 
+            text-align: center;
+            border: none;
+            background-color: #6c88e0;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .example-btn:hover {
+            background-color: #5873d4;
+        }
+        
+        .info {
+            background-color: #f7f7f7;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        footer {
+            padding: 20px;
+            background-color: #343536;
+            margin-top: 20px;
+            color: #fff;
+        }
+        
+        .calculator h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        #calculator-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        #calculator-form input {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2rem;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        #result-box {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2rem;
+            text-align: center;
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            background-color: #6c88e0;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #5873d4;
+        }
+        
+        p, h1 {
+            text-align: left;
+            margin-top: 20px;
+            margin-left: 33%;
+            width: 40%;
+        }
+        
+        .how-to, .in-life, .what-is, .other-operation {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        
+        .what-is, .other-operation {
+            background-color:rgb(192, 194, 204);
+        }
+        
+        .other-operation {
+            text-align: center !important;
+        }
+
+        @media only screen and (max-width: 540px) {
+            a {
+                text-align: center !important;
+                margin: 0 !important;
+            }
+
+            #calculator-form, .examples, .example-row, .other-operation {
+                flex-direction: column;
+            }
+            
+            button, input, span, .example-btn {
+                width: 100%;
+            }
+        }
+
+        @media only screen and (max-width: 1000px) {
+            h1, h2, p {
+                width: 100%;
+                margin-left: 0;
+            }
+
+            h1, h2 {
+                font-size: 1.2rem !important;
+            }
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const exampleButtons = document.querySelectorAll('.example-btn');
+        
+            exampleButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const exampleText = this.textContent.trim();
+                    const parts = exampleText.split('th root of '); // Chia theo cú pháp căn
+                    const degree = parseFloat(parts[0].trim());
+                    const number = parseFloat(parts[1].trim());
+        
+                    let result;
+        
+                    if (!isNaN(degree) && !isNaN(number) && degree > 0) {
+                        result = Math.pow(number, 1 / degree); // Tính căn bậc n
+                    } else {
+                        result = "Invalid input!";
+                    }
+        
+                    document.getElementById('degree').value = degree;
+                    document.getElementById('number').value = number;
+                    document.getElementById('degree-display').textContent = degree;
+                    document.getElementById('number-display').textContent = number;
+                    document.getElementById('result-display').textContent = result;
+                    document.getElementById('result-display-2').textContent = result;
+                });
+            });
+        
+            document.getElementById('calculator-form').addEventListener('submit', function(event) {
+                event.preventDefault();
+        
+                const degree = parseFloat(document.getElementById('degree').value);
+                const number = parseFloat(document.getElementById('number').value);
+                let result;
+        
+                if (!isNaN(degree) && !isNaN(number) && degree > 0) {
+                    result = Math.pow(number, 1 / degree);
+                } else {
+                    result = "Invalid input!";
+                }
+        
+                document.getElementById('degree-display').textContent = degree;
+                document.getElementById('number-display').textContent = number;
+                document.getElementById('result-display').textContent = result;
+                document.getElementById('result-display-2').textContent = result;
+            });
+        });                  
+    </script>
+</head>
+<body>
+    <header>
+        <a style="font-size: 2rem; text-align: left; margin-left: 5%; text-decoration: none; color:#323131; font-weight: bold" href="index.html">Calculator</a>
+    </header>
+
+    <main>
+        <section class="calculator">
+            <h2 style="font-weight:normal; font-size: 2rem; margin-top: 20px">
+                <strong><span id="degree-display">2</span></strong>th root of 
+                <strong><span id="number-display">9</span></strong> equals 
+                <strong><span id="result-display">3</span></strong>
+            </h2>
+            <form id="calculator-form">
+                <label for="degree">Degree:</label>
+                <input type="number" id="degree" placeholder="2" required min="1">
+                <span style="min-width: 6%">th root of</span>
+                <input type="number" id="number" placeholder="9" required step="any">
+                <span>=</span>
+                <div id="result-box"><span id="result-display-2">3</span></div>
+                <button type="submit">Calculate</button>
+            </form>
+        </section>            
+
+        <section class="examples">
+            <h3 style="font-size: 2rem; margin-top: 20px; text-align: center">Example</h3>
+            <div class="example-row">
+                <button class="example-btn">2th root of 16</button>
+                <button class="example-btn">3th root of 27</button>
+            </div>
+            <div class="example-row">
+                <button class="example-btn">4th root of 81</button>
+                <button class="example-btn">5th root of 32</button>
+            </div>
+            <div class="example-row">
+                <button class="example-btn">6th root of 64</button>
+                <button class="example-btn">7th root of 128</button>
+            </div>
+        </section>       
+
+        <section class="how-to">
+            <h1 style="font-size: 2rem; margin-top: 20px">How to calculate a root?</h1>
+            <p>Calculating a root is the process of finding a number that, when raised to a specified power, equals the given number. To calculate a root:</p>
+            <p>1. Identify the degree of the root you want to calculate (e.g., square root, cube root).</p>
+            <p>2. Choose the number for which you want to find the root.</p>
+            <p>3. Perform the calculation: raise the number to the power of the reciprocal of the degree.</p>
+            <p>4. The result is the root, which represents the number that, when multiplied by itself a certain number of times, gives the original number.</p>
+        </section>
+        
+        <section class="what-is">
+            <h1 style="font-size: 2rem; margin-top: 20px">What is a root?</h1>
+            <p>A root is one of the fundamental concepts in mathematics, representing the inverse operation of exponentiation. It is the process of determining a number that, when raised to a certain degree, equals a specified value.</p>
+            <p>For example, finding the square root of 16 means identifying the number that, when multiplied by itself, results in 16. The answer is 4.</p>
+        </section>
+        
+        <section class="in-life">
+            <h1 style="font-size: 2rem; margin-top: 20px">Roots in everyday life</h1>
+            <p>Calculating roots is a useful concept in various real-life situations. Here are a few examples:</p>
+            <p>Determining the length of the sides of a square when given the area.</p>
+            <p>Finding the dimensions of a cube when given the volume.</p>
+            <p>Solving problems in construction and engineering involving geometric shapes.</p>
+            <p>Calculating the necessary dimensions in design and architecture.</p>
+        </section>                
+
+        <section class="other-operation">
+            <h2 style="font-size: 2rem; margin-top: 20px">Other calculators</h2>
+            <div class="example-row">
+                <button class="example-btn" onclick="window.location.href='subtraction.html'">Subtraction</button>
+                <button class="example-btn" onclick="window.location.href='multiplication.html'">Multiplication</button>
+            </div>
+            <div class="example-row">
+                <button class="example-btn" onclick="window.location.href='division.html'">Division</button>
+                <button class="example-btn" onclick="window.location.href='exponentiation.html'">Exponentiation</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3 style="text-align:center">&copy; 2024 DividedBy</h3>
+    </footer>
+</body>
+</html>
