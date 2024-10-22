@@ -1,0 +1,1142 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <script src="https://kit.fontawesome.com/5c1348c060.js" crossorigin="anonymous"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        header {
+            text-align: left;
+            background-color: #e6e9f0;
+            padding: 20px;
+            padding-left: 50px !important;
+        }
+        
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .calculator {
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+        }
+        
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            background-color: #6c88e0;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #5873d4;
+        }
+        
+        .examples {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            border-radius: 10px;
+            background-color: rgb(192, 194, 204);
+        }
+        
+        .example-row {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+            gap: 5px;
+        }
+        
+        .info {
+            background-color: #f7f7f7;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        footer {
+            padding: 20px;
+            background-color: #343536;
+            margin-top: 20px;
+            color: #fff;
+        }
+        
+        .calculator h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        #calculator-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        #calculator-form input {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2rem;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        #result-box {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2rem;
+            text-align: center;
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        p {
+            text-align: left;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            margin-left: 10%;
+            width: 60%;
+        }
+        
+        h1, h2 {
+            text-align: center;
+        }
+        
+        .how-to,
+        .what-is-division,
+        .other-operation {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        
+        .what-is-division,
+        .other-operation {
+            background-color: rgb(192, 194, 204);
+        }
+        
+        .other-operation {
+            text-align: center !important;
+        }
+        
+        .contact-section {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .contact-section form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: left;
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        .contact-section label {
+            align-self: flex-start;
+            margin-bottom: 5px;
+        }
+        
+        .contact-section input,
+        .contact-section textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-family: "Roboto", sans-serif;
+            box-sizing: border-box;
+        }
+        
+        .contact-section button {
+            padding: 10px 20px;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        
+        .wrapper {
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .wrapper h1 {
+            font-size: 36px;
+            color: #323131;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        label {
+            color: rgb(54, 54, 54);
+        }
+
+        .floating-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .fab {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #6c88e0;
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            font-size: 1.35rem;
+        }
+
+        .fab:hover {
+            background-color: #5873d4;
+            transform: scale(1.1);
+        }
+
+        .modal, .chatbot-modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow-y: hidden;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content, .chatbot-modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 500px;
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            height: auto;
+        }
+
+        .chatbot-modal-content {
+            width: 100% !important;
+            height: 100% !important;
+            margin: 0 !important;
+        }
+
+        .modal-header {
+            background: linear-gradient(to right, #4e54c8, #8f94fb);
+            color: white;
+            padding: 20px;
+            height: 80px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close {
+            color: black;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 3rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            line-height: 1;
+        }
+
+        #calculator-form-modal {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        #calculator-form-modal input,
+        #calculator-form-modal select {
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #calculator-form-modal button {
+            padding: 10px;
+            background-color: #6c88e0;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        #calculator-form-modal button:hover {
+            background-color: #5873d4;
+        }
+
+        #calc-result {
+            margin-top: 15px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .calculator-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        #display {
+            width: 100%;
+            height: 50px;
+            font-size: 24px;
+            text-align: right;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        
+        .calculator-buttons {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 20px;
+            font-size: 1.5rem;
+            border: none;
+            background-color: #6c88e0;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn:hover {
+            background-color: #5873d4;
+        }   
+        
+        .radio-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr); /* 4 cột */
+            gap: 10px;
+        }
+
+        .calc-btn {
+            height: 50px;
+            font-size: 18px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .calc-btn:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .calc-btn:active {
+            background-color: #ccc;
+        }
+
+        .calculator-body .buttons {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr); /* Tạo 5 cột đều nhau */
+            gap: 10px; /* Khoảng cách giữa các nút */
+        }
+        
+        .calculator-body .buttons button {
+            padding: 15px;
+            font-size: 18px;
+            text-align: center;
+            background-color: rgb(61, 63, 67) !important;
+        }
+        
+        .calculator-body .two-cell {
+            grid-column: span 2; /* Cho phép chiếm 2 ô cho checkbox */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .calculator-body input#display {
+            font-size: 1.5rem;
+            text-align: right;
+            padding: 10px;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        
+        #chatbot-content {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto !important;
+            overflow-x: hidden;
+            margin-left: 0%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            max-height: 75%;
+            margin-bottom: 20px;
+            margin-top: 10px;
+        }
+        .message {
+            margin-bottom: 10px;
+            white-space: pre-wrap;
+        }
+        .user-message {
+            background-color: #90b8ff;
+            padding: 8px;
+            border-radius: 15px;
+            align-self: flex-end;
+            margin-left: auto;
+            width: auto;
+            max-width: 60%;
+            word-wrap: break-word;
+            font-size: 1.35rem;
+        }
+        .bot-message {
+            background-color: #c7c7c7;
+            padding: 8px;
+            border-radius: 15px;
+            width: auto;
+            max-width: 60%;
+            word-wrap: break-word;
+            font-size: 1.35rem;
+        }
+        .chat-input-area {
+            padding: 20px;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #d6d6d6;
+        }
+        #chat-input {
+            flex-grow: 1;
+            padding: 8px;
+            border: 2px solid #070707;
+            border-radius: 20px;
+            outline: none;
+            min-height: 50px;
+            max-height: 200px;
+            font-size: 1.3rem;
+            width: 90%;
+            font-family: "Roboto", sans-serif;
+            overflow-y: auto;
+            resize: none;
+            box-sizing: border-box; 
+        }
+        #send-button {
+            background-color: #4e54c8;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 7vh;
+            height: 7vh;
+            margin-left: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        @media only screen and (max-width: 500px) {
+            a {
+                text-align: center !important;
+                margin: 0 !important;
+            }
+
+            #calculator-form {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+
+            p {
+                width: 90%;
+                margin-left: 0;
+            }
+
+            .contact-section form {
+                width: 135% !important;
+            }
+
+            .contact-section h1 {
+                width: 110% !important;
+            }
+
+            .message {
+                max-width: 90% !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a style="font-size: 2rem; text-decoration: none; color:#323131; font-weight: bold" href="index.html">Calculator</a>
+    </header>
+
+    <main>
+        <section class="calculator">
+            <h2 style="font-weight:normal; font-size: 2rem; margin-top: 20px">
+                <strong><span id="result-display">Search box</span></strong>
+            </h2>
+            <form id="calculator-form">
+                <input type="text" id="denominator" placeholder="Please enter the type of calculation you want to search for here." required step="any">
+                <button type="submit">Search</button>
+            </form>
+        </section>            
+
+        <section class="examples">
+            <h1 style="font-size: 2rem; margin-top: 20px">About Us</h1>
+            <p>At <strong>Calculator</strong>, our goal is to make calculations enjoyable, straightforward, and easy to understand. That’s why we’ve developed a versatile calculator that can handle a wide range of mathematical and physical problems.</p>
+            <p>We also recognize the importance of learning and understanding math and physics concepts, not just relying on a calculator. Therefore, every answer comes with a detailed methodology to help you work through the problem on your own.</p>
+            <p>For any calculation challenge—big or small—we’re here to assist you.</p>
+        </section>           
+
+        <section class="how-to">
+            <h1 style="font-size: 2rem; margin-top: 20px">List of calculators</h1>
+            <ul>
+                <li><a href="abs.html">Abs</a></li>
+                <li><a href="addition.html">Addition</a></li>
+                <li><a href="average.html">Average</a></li>
+                <li><a href="beta.html">Beta</a></li>
+                <li><a href="ceil.html">Ceil</a></li>
+                <li><a href="chatbot.html">Chatbot</a></li>
+                <li><a href="derivative.html">Derivative</a></li>
+                <li><a href="division.html">Division</a></li>
+                <li><a href="exp.html">Exp</a></li>
+                <li><a href="exponentiation.html">Exponentiation</a></li>
+                <li><a href="factorial.html">Factorial</a></li>
+                <li><a href="floor.html">Floor</a></li>
+                <li><a href="gamma.html">Gamma</a></li>
+                <li><a href="index.html">Index</a></li>
+                <li><a href="log.html">Log</a></li>
+                <li><a href="max.html">Max</a></li>
+                <li><a href="median.html">Median</a></li>
+                <li><a href="min.html">Min</a></li>
+                <li><a href="mortgage.html">Mortgage</a></li>
+                <li><a href="multiplication.html">Multiplication</a></li>
+                <li><a href="prod.html">Prod</a></li>
+                <li><a href="rand.html">Rand</a></li>
+                <li><a href="round.html">Round</a></li>
+                <li><a href="sqrt.html">Sqrt</a></li>
+                <li><a href="stdev.html">Stdev</a></li>
+                <li><a href="subtraction.html">Subtraction</a></li>
+                <li><a href="sum.html">Sum</a></li>
+                <li><a href="trigonometric.html">Trigonometric</a></li>
+                <li><a href="variance.html">Variance</a></li>
+            </ul>            
+        </section>
+
+        <section class="what-is-division">
+            <div class="contact-section">
+                <div class="wrapper">
+                    <h1>Contact Us</h1>
+                    <form id="contactForm">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" placeholder="Your name" required>
+        
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" placeholder="Your Email Address" required>
+        
+                        <label for="message">Message:</label>
+                        <textarea id="message" name="message" rows="4" placeholder="Please enter your requirement for here!" required></textarea>
+        
+                        <button type="submit">Confirm</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h3 style="text-align:center">&copy; 2024 DividedBy</h3>
+    </footer>
+
+    <div class="floating-buttons">
+        <button id="calculator-btn" class="fab" title="Open Calculator">
+            <i class="fas fa-calculator"></i>
+        </button>
+        <button id="chatbot-btn" class="fab" title="Open Chatbot">
+            <i class="fas fa-comments"></i>
+        </button>
+    </div>
+
+    <div id="calculator-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="close-calculator">&times;</span>
+            <h2 style="margin-bottom: 20px;">Calculator</h2>
+            <div class="calculator-body">
+                <input type="text" id="display" disabled>
+            
+                <div style="margin-bottom: 10px;">
+                    <label><input type="radio" name="angleMode" value="deg" checked> Deg</label>
+                    <label><input type="radio" name="angleMode" value="rad"> Rad</label>
+                </div>
+            
+                <div class="buttons">
+                    <button data-action="memory" data-value="M+">M+</button>
+                    <button data-action="memory" data-value="M-">M-</button>
+                    <button data-action="clear">AC</button>
+                    <button data-action="backspace">Back</button>
+                    <button data-action="factorial">n!</button>
+                    <button data-action="operator" data-value="+">+</button>
+                    <button data-action="trig" data-value="sin">sin</button>
+                    <button data-action="trig" data-value="cos">cos</button>
+                    <button data-action="trig" data-value="tan">tan</button>
+                    <button data-action="append" data-value="1">1</button>
+                    <button data-action="append" data-value="2">2</button>
+                    <button data-action="operator" data-value="-">-</button>
+                    <button data-action="trig" data-value="cot">cot</button>
+                    <button data-action="inverseTrig" data-value="sin⁻¹">sin<sup>-1</sup></button>
+                    <button data-action="inverseTrig" data-value="cos⁻¹">cos<sup>-1</sup></button>
+                    <button data-action="append" data-value="3">3</button>
+                    <button data-action="append" data-value="4">4</button>
+                    <button data-action="operator" data-value="*">*</button>
+                    <button data-action="inverseTrig" data-value="tan⁻¹">tan<sup>-1</sup></button>
+                    <button data-action="inverseTrig" data-value="cot⁻¹">cot<sup>-1</sup></button>
+                    <button data-action="log">log</button>
+                    <button data-action="append" data-value="5">5</button>
+                    <button data-action="append" data-value="6">6</button>
+                    <button data-action="operator" data-value="/">/</button>
+                    <button data-action="ln">ln</button>
+                    <button data-action="customLog">log<sub>y</sub></button>
+                    <button data-action="power" data-value="2">x²</button>
+                    <button data-action="append" data-value="7">7</button>
+                    <button data-action="append" data-value="8">8</button>
+                    <button data-action="append" data-value="π">π</button>
+                    <button data-action="power" data-value="3">x³</button>
+                    <button data-action="customPower">xʸ</button>
+                    <button data-action="sqrt">√x</button>
+                    <button data-action="append" data-value="9">9</button>
+                    <button data-action="append" data-value="0">0</button>
+                    <button data-action="append" data-value="e">e</button>                    
+                    <button data-action="cbrt">∛x</button>
+                    <button data-action="append" data-value="%">%</button>
+                    <button data-action="append" data-value="(">(</button>
+                    <button data-action="append" data-value=")">)</button>                    
+                    <button data-action="append" data-value=".">.</button>
+                    <button data-action="calculate">=</button>
+                </div>                
+            </div>            
+        </div>
+    </div>    
+
+    <div id="chatbot-modal" class="chatbot-modal">
+        <div class="chatbot-modal-content">
+            <div class="modal-header">
+                <h1>Chatbot AI</h1>
+                <span class="close" id="close-chatbot">&times;</span>
+            </div>
+            <div id="chatbot-content"></div>
+            <div class="chat-input-area">
+                <textarea id="chat-input" placeholder="Ask me anything..."></textarea>
+                <button id="send-button">➤</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var textarea = document.getElementById('chat-input');
+
+            function adjustHeight() {
+                textarea.style.height = '50px';
+                textarea.style.height = Math.min(textarea.scrollHeight, 200) + 'px';
+            }
+
+            textarea.addEventListener('input', adjustHeight);
+            adjustHeight();
+
+            const sendButton = document.getElementById('send-button');
+            const chatContent = document.getElementById('chatbot-content');
+            let context = "";
+
+            function autoScroll() {
+                chatContent.scrollTop = chatContent.scrollHeight;
+            }
+
+            async function sendMessage() {
+                const userInput = document.getElementById('chat-input');
+                const messageText = userInput.value.trim();
+                if (messageText === '') return;
+            
+                // Display user's message
+                const userMessage = document.createElement('div');
+                userMessage.classList.add('message', 'user-message');
+                userMessage.textContent = messageText;
+                chatContent.appendChild(userMessage);
+            
+                userInput.value = '';
+                adjustHeight();
+                autoScroll();
+            
+                // Send the message to the server
+                try {
+                    const response = await fetch('http://127.0.0.1:8000/api/chat/', {  // Relative URL
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            message: messageText,
+                            context: context
+                        }),
+                    });
+            
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Unknown error');
+                    }
+            
+                    const data = await response.json();
+                    const botResponse = data.response;
+                    context = data.context;
+            
+                    // Display bot's response
+                    const botMessage = document.createElement('div');
+                    botMessage.classList.add('message', 'bot-message');
+                    botMessage.textContent = botResponse;
+                    chatContent.appendChild(botMessage);
+                    autoScroll();
+                } catch (error) {
+                    console.error('Error:', error);
+                    const errorMessage = document.createElement('div');
+                    errorMessage.classList.add('message', 'bot-message');
+                    errorMessage.textContent = 'Error: ' + error.message;
+                    chatContent.appendChild(errorMessage);
+                    autoScroll();
+                }
+            }
+
+            sendButton.addEventListener('click', sendMessage);
+
+            document.getElementById('chat-input').addEventListener('keypress', function (e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+        });
+    </script>
+    
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const calculatorBtn = document.getElementById('calculator-btn');
+            const chatbotBtn = document.getElementById('chatbot-btn');
+            const calculatorModal = document.getElementById('calculator-modal');
+            const chatbotModal = document.getElementById('chatbot-modal');
+            const closeCalculator = document.getElementById('close-calculator');
+            const closeChatbot = document.getElementById('close-chatbot');
+            const display = document.getElementById('display');
+        
+            calculatorBtn.addEventListener('click', () => {
+                calculatorModal.style.display = 'block';
+            });
+        
+            closeCalculator.addEventListener('click', () => {
+                calculatorModal.style.display = 'none';
+            });
+        
+            chatbotBtn.addEventListener('click', () => {
+                chatbotModal.style.display = 'block';
+            });
+        
+            closeChatbot.addEventListener('click', () => {
+                chatbotModal.style.display = 'none';
+            });
+        
+            window.addEventListener('click', (event) => {
+                if (event.target == calculatorModal) {
+                    calculatorModal.style.display = 'none';
+                }
+                if (event.target == chatbotModal) {
+                    chatbotModal.style.display = 'none';
+                }
+            });
+                
+                let currentValue = '';
+                let expression = '';
+                let operator = '';
+                let firstValue = '';
+                let memory = 0;
+            
+                function updateDisplay(value) {
+                    display.value = value;
+                    display.scrollLeft = display.scrollWidth;
+                }
+            
+                function appendValue(value) {
+                    if (value === 'π') {
+                        currentValue += Math.PI;
+                    } else if (value === 'e') {
+                        currentValue += Math.E;
+                    } else {
+                        currentValue += value;
+                    }
+                    expression += value;
+                    updateDisplay(expression);
+                }
+            
+                function setOperator(op) {
+                    if (currentValue !== '') {
+                        firstValue = currentValue;
+                        operator = op;
+                        currentValue = '';
+                        expression += op;
+                        updateDisplay(expression);
+                    }
+                }
+            
+                function calculate() {
+                    try {
+                        const result = eval(expression);
+                        updateDisplay(result);
+                        currentValue = result;
+                        expression = result.toString();
+                    } catch (e) {
+                        updateDisplay('Error');
+                    }
+                }
+            
+                function clearDisplay() {
+                    currentValue = '';
+                    firstValue = '';
+                    operator = '';
+                    expression = '';
+                    updateDisplay('');
+                }
+            
+                function backspace() {
+                    currentValue = currentValue.slice(0, -1);
+                    expression = expression.slice(0, -1);
+                    updateDisplay(expression);
+                }
+
+                function calculateTrig(func) {
+                    const value = parseFloat(currentValue);
+                    let result;
+                    const isDeg = document.querySelector('input[name="angleMode"]:checked').value === 'deg';
+                    const radValue = isDeg ? value * (Math.PI / 180) : value;
+            
+                    switch (func) {
+                        case 'sin':
+                            result = Math.sin(radValue);
+                            break;
+                        case 'cos':
+                            result = Math.cos(radValue);
+                            break;
+                        case 'tan':
+                            result = Math.tan(radValue);
+                            break;
+                        case 'cot':
+                            result = 1 / Math.tan(radValue);
+                            break;
+                    }
+                    updateDisplay(result);
+                    currentValue = result;
+                }
+            
+                function calculateInverseTrig(func) {
+                    const value = parseFloat(currentValue);
+                    let result;
+                    const isDeg = document.querySelector('input[name="angleMode"]:checked').value === 'deg';
+            
+                    switch (func) {
+                        case 'sin⁻¹':
+                            result = Math.asin(value);
+                            break;
+                        case 'cos⁻¹':
+                            result = Math.acos(value);
+                            break;
+                        case 'tan⁻¹':
+                            result = Math.atan(value);
+                            break;
+                        case 'cot⁻¹':
+                            result = Math.atan(1 / value);
+                            break;
+                    }
+                    result = isDeg ? result * (180 / Math.PI) : result;
+                    updateDisplay(result);
+                    currentValue = result;
+                }
+            
+                function calculatePower(exp) {
+                    const result = Math.pow(parseFloat(currentValue), exp);
+                    updateDisplay(result);
+                    currentValue = result;
+                }
+            
+                function calculateCustomPower() {
+                    const [base, exponent] = currentValue.split(',').map(parseFloat);
+                    if (!isNaN(base) && !isNaN(exponent)) {
+                        const result = Math.pow(base, exponent);
+                        updateDisplay(result);
+                        currentValue = result;
+                    } else {
+                        updateDisplay('Error');
+                    }
+                }
+            
+                function calculateSqrt() {
+                    const result = Math.sqrt(parseFloat(currentValue));
+                    updateDisplay(result);
+                    currentValue = result;
+                }
+            
+                function calculateCbrt() {
+                    const result = Math.cbrt(parseFloat(currentValue));
+                    updateDisplay(result);
+                    currentValue = result;
+                }
+            
+                function calculateLog() {
+                    const value = parseFloat(currentValue);
+                    if (value > 0) {
+                        const result = Math.log10(value);
+                        updateDisplay(result);
+                        currentValue = result;
+                    } else {
+                        updateDisplay('Error');
+                    }
+                }
+            
+                function calculateCustomLog() {
+                    const [base, number] = currentValue.split(',').map(parseFloat);
+                    if (base > 0 && base !== 1 && number > 0) {
+                        const result = Math.log(number) / Math.log(base);
+                        updateDisplay(result);
+                        currentValue = result;
+                    } else {
+                        updateDisplay('Error');
+                    }
+                }
+            
+                function calculatePercentage() {
+                    const value = parseFloat(currentValue);
+                    const result = value / 100;
+                    updateDisplay(result);
+                    currentValue = result;
+                }
+            
+                function calculateFactorial() {
+                    const value = parseInt(currentValue);
+                    if (value < 0) {
+                        updateDisplay('Error');
+                        return;
+                    }
+                    let result = 1;
+                    for (let i = 1; i <= value; i++) {
+                        result *= i;
+                    }
+                    updateDisplay(result);
+                    currentValue = result;
+                }
+            
+                function calculateMemory(operation) {
+                    switch (operation) {
+                        case 'M+':
+                            memory += parseFloat(currentValue);
+                            break;
+                        case 'M-':
+                            memory -= parseFloat(currentValue);
+                            break;
+                        case 'MR':
+                            updateDisplay(memory);
+                            currentValue = memory;
+                            break;
+                    }
+                }    
+            
+                function calculateWithParentheses() {
+                    try {
+                        const result = eval(expression);
+                        updateDisplay(result);
+                        currentValue = result;
+                        expression = result.toString();
+                    } catch (e) {
+                        updateDisplay('Error');
+                    }
+                }
+            
+document.querySelectorAll('.buttons button').forEach(button => {
+    button.addEventListener('click', function() {
+        const action = button.getAttribute('data-action');
+        const value = button.getAttribute('data-value');
+
+        switch (action) {
+            case 'append':
+                appendValue(value);
+                break;
+            case 'operator':
+                setOperator(value);
+                break;
+            case 'calculate':
+                calculate();
+                break;
+            case 'clear':
+                clearDisplay();
+                break;
+            case 'backspace':
+                backspace();
+                break;
+            case 'trig':
+                calculateTrig(value);
+                break;
+            case 'inverseTrig':
+                calculateInverseTrig(value);
+                break;
+            case 'power':
+                calculatePower(parseInt(value));
+                break;
+            case 'sqrt':
+                calculateSqrt();
+                break;
+            case 'cbrt':
+                calculateCbrt();
+                break;
+            case 'log':
+                calculateLog();
+                break;
+            case 'customLog':
+                calculateCustomLog();
+                break;
+            case 'percentage':
+                calculatePercentage();
+                break;
+            case 'factorial':
+                calculateFactorial();
+                break;
+            case 'memory':
+                calculateMemory(value);
+                break;
+            case 'customPower':
+                calculateCustomPower();
+                break;
+            case 'calculateWithParentheses':
+                calculateWithParentheses();
+                break;
+        }
+    });
+});
+            
+                document.addEventListener('keydown', function(event) {
+                    const key = event.key;
+            
+                    if (!isNaN(key) || ['+', '-', '*', '/', '.', '(', ')'].includes(key)) {
+                        appendValue(key);
+                    } else if (key === 'Enter') {
+                        calculateWithParentheses();
+                    } else if (key === 'Backspace') {
+                        backspace();
+                    } else if (key === '%') {
+                        appendValue('%');
+                    } else if (key === 'e') {
+                        appendValue('e');
+                    } else if (key === 'π') {
+                        appendValue('π');
+                    }
+                });
+
+                document.addEventListener('keypress', function(event) {
+                    if (event.key === "Enter") {
+                        event.preventDefault();
+                        calculateWithParentheses();
+                    }
+                });
+            
+                window.calculateTrig = calculateTrig;
+                window.calculateInverseTrig = calculateInverseTrig;
+                window.calculatePower = calculatePower;
+                window.calculateSqrt = calculateSqrt;
+                window.calculateCbrt = calculateCbrt;
+                window.calculateLog = calculateLog;
+                window.calculateCustomLog = calculateCustomLog;
+                window.calculatePercentage = calculatePercentage;
+                window.calculateFactorial = calculateFactorial;
+                window.calculateMemory = calculateMemory;
+                window.calculateWithParentheses = calculateWithParentheses;
+                window.appendValue = appendValue;
+                window.setOperator = setOperator;
+                window.calculate = calculate;
+                window.clearDisplay = clearDisplay;
+                window.backspace = backspace;
+            });            
+    </script>
+</body>
+</html>
